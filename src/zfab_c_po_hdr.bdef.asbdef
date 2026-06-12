@@ -1,0 +1,26 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZFAB_C_PO_HDR alias Purchase
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Activate;
+  use action Discard;
+  use action Edit;
+  use action Resume;
+  use action Prepare;
+
+  use association _PurchaseItems { create; with draft; }
+}
+
+define behavior for ZFAB_C_PO_ITM alias PurchaseItems
+{
+  use update;
+  use delete;
+
+  use association _Purchase { with draft; }
+}

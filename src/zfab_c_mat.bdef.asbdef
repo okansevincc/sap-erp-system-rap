@@ -1,0 +1,16 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZFAB_C_MAT alias _MaterialProduct
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Activate;
+  use action Discard;
+  use action Edit;
+  use action Resume;
+  use action Prepare;
+}

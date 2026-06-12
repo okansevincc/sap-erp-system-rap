@@ -1,0 +1,78 @@
+managed implementation in class zbp_fab_r_po_hdr unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZFAB_R_PO_HDR alias Purchase
+persistent table zfab_t_po_hdr
+draft table zfab_t_po_hdr_d
+lock master total etag LastChangedAt
+authorization master ( global )
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( numbering : managed ) PoUuid;
+  field ( readonly ) PoUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt;
+  field ( mandatory ) PoId, Status, VendorUuid;
+  association _PurchaseItems { create; with draft; }
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare {}
+
+  mapping for zfab_t_po_hdr
+  {
+
+    PoUuid = po_uuid;
+    PoId = po_id;
+    VendorUuid = vendor_uuid;
+    Status = status;
+    TotalAmount = total_amount;
+    Waers = waers;
+    CreatedAt = created_at;
+    CreatedBy = created_by;
+    LastChangedAt = last_changed_at;
+    LastChangedBy = last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+
+  }
+
+}
+
+define behavior for ZFAB_R_PO_ITM alias PurchaseItems
+persistent table zfab_t_po_itm
+draft table zfab_t_po_itm_d
+lock dependent by _Purchase
+authorization dependent by _Purchase
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( numbering : managed ) PoItmUuid;
+  field ( readonly ) PoItmUuid, PoUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt, UnitPrice, UnitUom, Waers;
+  field ( mandatory ) ItemPos, MatUuid, Quantity;
+  association _Purchase { with draft; }
+
+  mapping for zfab_t_po_itm {
+
+    PoItmUuid = po_itm_uuid;
+    PoUuid = po_uuid;
+    ItemPos = item_pos;
+    MatUuid = mat_uuid;
+    Quantity = quantity;
+    UnitUom = unit_uom;
+    UnitPrice = unit_price;
+    Waers = waers;
+    CreatedAt = created_at;
+    CreatedBy = created_by;
+    LastChangedAt = last_changed_at;
+    LastChangedBy = last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+
+  }
+
+
+}

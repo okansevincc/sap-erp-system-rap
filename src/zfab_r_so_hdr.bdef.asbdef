@@ -1,0 +1,75 @@
+managed implementation in class zbp_fab_r_so_hdr unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZFAB_R_SO_HDR alias Sales
+persistent table zfab_t_so_hdr
+draft table zfab_t_so_hdr_d
+lock master total etag LastChangedAt
+authorization master ( global )
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( numbering : managed ) SoUuid;
+  field ( readonly ) SoUuid;
+  association _SalesItems { create; with draft; }
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare{}
+
+   mapping for zfab_t_so_hdr{
+
+   SoUuid = so_uuid;
+   SoId = so_id;
+   CustomerUuid = customer_uuid;
+   Status = status;
+   TotalAmount = total_amount;
+   Waers = waers;
+   CreatedAt = created_at;
+   CreatedBy = created_by;
+   LastChangedAt = last_changed_at;
+   LastChangedBy = last_changed_by;
+   LocalLastChangedAt = local_last_changed_at;
+
+
+   }
+
+}
+
+define behavior for ZFAB_R_SO_ITM alias SalesItems
+persistent table zfab_t_so_itm
+draft table zfab_t_so_itm_d
+lock dependent by _Sales
+authorization dependent by _Sales
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( numbering : managed ) SoItmUuid;
+  field ( readonly ) SoItmUuid, SoUuid;
+  association _Sales { with draft; }
+
+  mapping for zfab_t_so_itm{
+
+  SoItmUuid = so_itm_uuid;
+  SoUuid = so_uuid;
+  ItemPos = item_pos;
+  MatUuid = mat_uuid;
+  Quantity = quantity;
+  UnitUom = unit_uom;
+  UnitPrice = unit_price;
+  Waers = waers;
+  CreatedAt = created_at;
+  CreatedBy = created_by;
+  LastChangedAt = last_changed_at;
+  LastChangedBy = last_changed_by;
+  LocalLastChangedAt = local_last_changed_at;
+
+  }
+
+}

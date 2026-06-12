@@ -1,0 +1,45 @@
+managed implementation in class zbp_fab_r_mat unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZFAB_R_MAT alias _MaterialProduct
+persistent table zfab_t_mat
+draft table zfab_t_mat_d
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( numbering : managed ) MatUuid;
+  field ( readonly ) MatUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt;
+  field (mandatory) MatId, MatType, MatGroup, Description, NetPrice, WeightUnit, Weight, Waers, BaseUom;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare{}
+
+  mapping for zfab_t_mat{
+
+    MatUuid = mat_uuid;
+    MatId = mat_id;
+    MatType = mat_type;
+    MatGroup = mat_group;
+    Description = description;
+    Weight = weight;
+    WeightUnit = weight_unit;
+    SafetyStock = safety_stock;
+    BaseUom = base_uom;
+    NetPrice = net_price;
+    Waers = waers;
+    CreatedAt = created_at;
+    CreatedBy = created_by;
+    LastChangedAt = last_changed_at;
+    LastChangedBy = last_changed_by;
+    LocalLastChangedAt = local_last_changed_at;
+
+  }
+}

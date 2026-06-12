@@ -1,0 +1,50 @@
+managed implementation in class zbp_fab_r_bp unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZFAB_R_BP alias _BusinessPartner
+persistent table zfab_t_bp
+draft table zfab_t_bp_d
+lock master total etag LastChangedAt
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( numbering : managed ) BpUuid;
+  field ( readonly ) BpUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt;
+  field ( mandatory ) BpId, BpRole, CompanyName,Country,City,Email,Phone,TaxNumber,TaxOffice;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare{}
+
+
+  mapping for ZFAB_T_BP{
+
+  BpUuid = bp_uuid;
+  BpId = bp_id;
+  BpRole = bp_role;
+  CompanyName = company_name;
+  TaxNumber = tax_number;
+  TaxOffice = tax_office;
+  Phone = phone;
+  Email = email;
+  Country = country;
+  City = city;
+  District = district;
+  Neighborhood = neighborhood;
+  AddrDetail = addr_detail;
+  PostalCode =postal_code;
+  CreatedAt = created_at;
+  CreatedBy = created_by;
+  LastChangedAt = last_changed_at;
+  LastChangedBy = last_changed_by;
+  LocalLastChangedAt = local_last_changed_at;
+
+  }
+
+}
