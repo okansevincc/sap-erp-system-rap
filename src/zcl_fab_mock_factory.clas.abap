@@ -15,17 +15,25 @@ ENDCLASS.
 CLASS zcl_fab_mock_factory IMPLEMENTATION.
 
   METHOD get_valid_material.
-    rs_mat = VALUE #(
-      mat_id       = 'Bakır01'
-      mat_type     = 'Ürün'
-      mat_group    = 'Hammadde'
-      description  = 'Bakır'
-      weight       = 100
-      weight_unit  = 'KG'
-      safety_stock = 100
-      base_uom     = 'KG'
-      net_price    = 100
-      waers        = 'TRY' ).
-  ENDMETHOD.
+
+    TRY.
+        rs_mat = VALUE #(
+          mat_uuid = cl_system_uuid=>create_uuid_x16_static(  )
+          mat_id       = 'Bakır01'
+          mat_type     = 'Ürün'
+          mat_group    = 'Hammadde'
+          description  = 'Bakır'
+          weight       = 100
+          weight_unit  = 'KG'
+          safety_stock = 100
+          base_uom     = 'KG'
+          net_price    = 100
+          waers        = 'TRY' ).
+
+      CATCH cx_uuid_error.
+
+      endtry.
+
+      ENDMETHOD.
 
 ENDCLASS.

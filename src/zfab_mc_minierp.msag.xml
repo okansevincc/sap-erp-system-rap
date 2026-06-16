@@ -98,6 +98,24 @@
      <MSGNR>015</MSGNR>
      <TEXT>Anlamsız Ağırlık Tipi Girişi Yapıldı!</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Malzeme Stok Miktarı Türü (BaseUom) Değiştirilemez.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Malzeme Id Değiştirilemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>Malzeme Ağırlık Tipi (WeightUnit) Değiştirilemez.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

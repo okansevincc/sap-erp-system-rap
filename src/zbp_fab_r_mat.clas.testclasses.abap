@@ -11,8 +11,8 @@ CLASS ltcl_mat_create_test DEFINITION FINAL FOR TESTING DURATION SHORT RISK LEVE
     METHODS:
       setup,
       teardown,
-      execute_create_test IMPORTING is_mat_data    TYPE zfab_t_mat
-                                    iv_msgno       TYPE symsgno,
+      execute_create_test IMPORTING is_mat_data TYPE zfab_t_mat
+                                    iv_msgno    TYPE symsgno,
       validate_MatId_initial        FOR TESTING,
       validate_MatType_initial      FOR TESTING,
       validate_MatGroup_initial     FOR TESTING,
@@ -82,26 +82,26 @@ CLASS ltcl_mat_create_test IMPLEMENTATION.
               REPORTED lt_reported.
 
 
-      cl_abap_unit_assert=>assert_not_initial(
-       act = lt_failed-_materialproduct
-       msg = 'Hata vermesi gerekiyordu ama kayit basarili oldu!' ).
+    cl_abap_unit_assert=>assert_not_initial(
+     act = lt_failed-_materialproduct
+     msg = 'Hata vermesi gerekiyordu ama kayit basarili oldu!' ).
 
-      DATA(lv_correct_error_found) = abap_false.
+    DATA(lv_correct_error_found) = abap_false.
 
-      LOOP AT lt_reported-_materialproduct INTO DATA(ls_reported).
+    LOOP AT lt_reported-_materialproduct INTO DATA(ls_reported).
 
-        IF ls_reported-%msg IS BOUND AND
-           ls_reported-%msg->if_t100_message~t100key-msgid = 'ZFAB_MC_MINIERP' AND
-           ls_reported-%msg->if_t100_message~t100key-msgno = iv_msgno.
+      IF ls_reported-%msg IS BOUND AND
+         ls_reported-%msg->if_t100_message~t100key-msgid = 'ZFAB_MC_MINIERP' AND
+         ls_reported-%msg->if_t100_message~t100key-msgno = iv_msgno.
 
-          lv_correct_error_found = abap_true.
-          EXIT.
-        ENDIF.
-      ENDLOOP.
+        lv_correct_error_found = abap_true.
+        EXIT.
+      ENDIF.
+    ENDLOOP.
 
-      cl_abap_unit_assert=>assert_true(
-        act = lv_correct_error_found
-        msg = |Kayit istenilen { iv_msgno } nolu hatadan dolayı patlamadı!| ).
+    cl_abap_unit_assert=>assert_true(
+      act = lv_correct_error_found
+      msg = |Kayit istenilen { iv_msgno } nolu hatadan dolayı patlamadı!| ).
 
 
   ENDMETHOD.
@@ -238,6 +238,131 @@ CLASS ltcl_mat_create_test IMPLEMENTATION.
     ls_test_data-weight_unit = 'XYZ'.
 
     execute_create_test( is_mat_data = ls_test_data iv_msgno = '015' ).
+
+  ENDMETHOD.
+
+ENDCLASS.
+
+CLASS ltcl_mat_update_test DEFINITION FINAL FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
+
+  PRIVATE SECTION.
+    CLASS-DATA: go_mock_environment TYPE REF TO if_cds_test_environment.
+    DATA: ms_base_mat TYPE zfab_t_mat.
+
+    CLASS-METHODS:
+      class_setup,
+      class_teardown.
+
+    METHODS:
+      setup,
+      teardown,
+      update_mat_entity IMPORTING is_mat_data TYPE zfab_t_mat
+                                  iv_msgno    TYPE symsgno,
+      validate_matid_unchangeable FOR TESTING,
+      validate_baseuom_unchangeable FOR TESTING,
+      validate_weightunit_unc FOR TESTING.
+
+
+
+ENDCLASS.
+
+CLASS ltcl_mat_update_test IMPLEMENTATION.
+
+  METHOD class_setup.
+    go_mock_environment = cl_cds_test_environment=>create( 'ZFAB_R_MAT' ).
+  ENDMETHOD.
+
+  METHOD class_teardown.
+    go_mock_environment->destroy(  ).
+  ENDMETHOD.
+
+
+  METHOD setup.
+
+      ms_base_mat = zcl_fab_mock_factory=>get_valid_material( ).
+
+      DATA: lt_mock_db_data TYPE STANDARD TABLE OF zfab_t_mat.
+      APPEND ms_base_mat TO lt_mock_db_data.
+
+      go_mock_environment->insert_test_data( i_data = lt_mock_db_data ).
+
+  ENDMETHOD.
+
+  METHOD teardown.
+    go_mock_environment->clear_doubles(  ).
+    CLEAR ms_base_mat.
+  ENDMETHOD.
+
+  METHOD update_mat_entity.
+
+    DATA: lt_failed type RESPONSE FOR FAILED zfab_r_mat,
+          lt_reported type RESPONSE FOR REPORTED zfab_r_mat.
+
+    MODIFY ENTITIES OF zfab_r_mat
+            ENTITY _MaterialProduct
+            UPDATE FIELDS ( MatId MatType MatGroup Description Weight WeightUnit SafetyStock BaseUom NetPrice Waers )
+            WITH VALUE #( (
+                            MatUuid = is_mat_data-mat_uuid
+                            MatId = is_mat_data-mat_id
+                            MatType = is_mat_data-mat_type
+                            MatGroup = is_mat_data-mat_group
+                            Description = is_mat_data-description
+                            Weight = is_mat_data-weight
+                            WeightUnit = is_mat_data-weight_unit
+                            SafetyStock = is_mat_data-safety_stock
+                            BaseUom = is_mat_data-base_uom
+                            NetPrice = is_mat_data-net_price
+                            Waers = is_mat_data-waers
+    ) ) FAILED lt_failed
+        REPORTED lt_reported.
+
+        cl_abap_unit_assert=>assert_not_initial(
+        act = lt_failed-_materialproduct
+        msg = 'Test Hata Vermeliydi Fakat Başarılı Kayıt Yapıldı!'  ).
+
+        DATA(lv_correct_error_found) = abap_false.
+
+        LOOP AT lt_reported-_materialproduct into data(ls_reported).
+
+        if ls_reported-%msg is BOUND and
+           ls_reported-%msg->if_t100_message~t100key-msgid = 'ZFAB_MC_MINIERP' and
+           ls_reported-%msg->if_t100_message~t100key-msgno = iv_msgno.
+
+           lv_correct_error_found = abap_true.
+           EXIT.
+           ENDif.
+        ENDLOOP.
+
+        cl_abap_unit_assert=>assert_true(
+        act = lv_correct_error_found
+        msg = |'Sistem Istenilen ' { iv_msgno } ' Nolu Hatadan Dolayı Patlamadı!'| ).
+
+  ENDMETHOD.
+
+  METHOD validate_baseuom_unchangeable.
+
+    data(ls_test_data) = ms_base_mat.
+    ls_test_data-base_uom = 'L'.
+
+    update_mat_entity( is_mat_data = ls_test_data iv_msgno = '016' ).
+
+  ENDMETHOD.
+
+  METHOD validate_matid_unchangeable.
+
+    data(ls_test_data) = ms_base_mat.
+    ls_test_data-mat_id = 'Çinko01'.
+
+    update_mat_entity( is_mat_data = ls_test_data iv_msgno = '017' ).
+
+  ENDMETHOD.
+
+  METHOD validate_weightunit_unc.
+
+    data(ls_test_data) = ms_base_mat.
+    ls_test_data-weight_unit = 'L'.
+
+    update_mat_entity( is_mat_data = ls_test_data iv_msgno = '018' ).
 
   ENDMETHOD.
 
