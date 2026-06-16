@@ -1,7 +1,8 @@
-CLASS ltcl_mat_test DEFINITION FINAL FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
+CLASS ltcl_mat_create_test DEFINITION FINAL FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
 
   PRIVATE SECTION.
     CLASS-DATA: go_mock_environment TYPE REF TO if_cds_test_environment.
+    DATA: ms_base_mat TYPE zfab_t_mat.
 
     CLASS-METHODS:
       class_setup,
@@ -10,34 +11,27 @@ CLASS ltcl_mat_test DEFINITION FINAL FOR TESTING DURATION SHORT RISK LEVEL HARML
     METHODS:
       setup,
       teardown,
-      create_value  IMPORTING
-                      iv_CId         TYPE string
-                      iv_MatId       TYPE zfab_t_mat-mat_id DEFAULT 'Bakır01'
-                      iv_MatType     TYPE zfab_t_mat-mat_type DEFAULT 'Ürün'
-                      iv_MatGroup    TYPE zfab_t_mat-mat_group DEFAULT 'Hammadde'
-                      iv_Description TYPE zfab_t_mat-description DEFAULT 'Bakır'
-                      iv_Weight      TYPE zfab_t_mat-weight DEFAULT 100
-                      iv_WeightUnit  TYPE zfab_t_mat-weight_unit DEFAULT 'KG'
-                      iv_SafetyStock TYPE zfab_t_mat-safety_stock DEFAULT 100
-                      iv_BaseUom     TYPE zfab_t_mat-base_uom DEFAULT 'KG'
-                      iv_NetPrice    TYPE zfab_t_mat-net_price DEFAULT 100
-                      iv_Waers       TYPE zfab_t_mat-waers DEFAULT 'TRY'
-                      iv_Message     TYPE string
-                      iv_expect_fail TYPE abap_bool DEFAULT abap_true,
-      is_MatId_initial       FOR TESTING,
-      is_MatType_initial     FOR TESTING,
-      is_MatGroup_initial    FOR TESTING,
-      is_Description_initial FOR TESTING,
-      is_Weight_initial      FOR TESTING,
-      is_WeightUnit_initial  FOR TESTING,
-      is_SafetyStock_initial FOR TESTING,
-      is_BaseUom_initial     FOR TESTING,
-      is_NetPrice_initial    FOR TESTING,
-      is_Waers_initial       FOR TESTING.
+      execute_create_test IMPORTING is_mat_data    TYPE zfab_t_mat
+                                    iv_msgno       TYPE symsgno,
+      validate_MatId_initial        FOR TESTING,
+      validate_MatType_initial      FOR TESTING,
+      validate_MatGroup_initial     FOR TESTING,
+      validate_Description_initial  FOR TESTING,
+      validate_Weight_initial       FOR TESTING,
+      validate_WeightUnit_initial   FOR TESTING,
+      validate_SafetyStock_initial  FOR TESTING,
+      validate_BaseUom_initial      FOR TESTING,
+      validate_NetPrice_initial     FOR TESTING,
+      validate_Waers_initial        FOR TESTING,
+      validate_Negative_netprice    FOR TESTING,
+      validate_Negative_SafetyStock FOR TESTING,
+      validate_Invalid_Waers        FOR TESTING,
+      validate_Invalid_BaseUom      FOR TESTING,
+      validate_Invalid_WeightUnit   FOR TESTING.
 
 ENDCLASS.
 
-CLASS ltcl_mat_test IMPLEMENTATION.
+CLASS ltcl_mat_create_test IMPLEMENTATION.
 
   METHOD class_setup.
 
@@ -53,106 +47,197 @@ CLASS ltcl_mat_test IMPLEMENTATION.
 
   METHOD setup.
 
-    DATA: lt_mock_mat TYPE STANDARD TABLE OF zfab_t_mat.
+    ms_base_mat = zcl_fab_mock_factory=>get_valid_material( ).
 
   ENDMETHOD.
 
   METHOD teardown.
+
     go_mock_environment->clear_doubles(  ).
+    CLEAR ms_base_mat.
+
   ENDMETHOD.
 
-  METHOD create_value.
+  METHOD execute_create_test.
 
     DATA: lt_failed TYPE RESPONSE FOR FAILED zfab_r_mat.
+    DATA: lt_reported TYPE RESPONSE FOR REPORTED zfab_r_mat.
 
     MODIFY ENTITIES OF zfab_r_mat
         ENTITY _MaterialProduct
         CREATE FIELDS ( MatId MatType MatGroup Description Weight WeightUnit SafetyStock BaseUom NetPrice Waers )
         WITH VALUE #( (
-         %cid = iv_CId
-         MatId = iv_matid
-         MatType = iv_mattype
-         MatGroup = iv_matgroup
-         Description = iv_description
-         Weight = iv_weight
-         WeightUnit = iv_weightunit
-         SafetyStock = iv_safetystock
-         BaseUom = iv_baseuom
-         NetPrice = iv_netprice
-         waers = iv_waers
-         )  ) FAILED lt_failed.
+         %cid = 'MOCK_CID_MATERIAL'
+         MatId = is_mat_data-mat_id
+         MatType = is_mat_data-mat_type
+         MatGroup = is_mat_data-mat_group
+         Description = is_mat_data-description
+         Weight = is_mat_data-weight
+         WeightUnit = is_mat_data-weight_unit
+         SafetyStock = is_mat_data-safety_stock
+         BaseUom = is_mat_data-base_uom
+         NetPrice = is_mat_data-net_price
+         waers = is_mat_data-waers
+         )  ) FAILED lt_failed
+              REPORTED lt_reported.
 
 
-    IF iv_expect_fail = abap_true.
       cl_abap_unit_assert=>assert_not_initial(
        act = lt_failed-_materialproduct
-       msg = iv_message ).
+       msg = 'Hata vermesi gerekiyordu ama kayit basarili oldu!' ).
 
-    ELSE.
-      cl_abap_unit_assert=>assert_initial(
-       act = lt_failed-_materialproduct
-       msg = iv_message ).
-    ENDIF.
+      DATA(lv_correct_error_found) = abap_false.
 
-  ENDMETHOD.
+      LOOP AT lt_reported-_materialproduct INTO DATA(ls_reported).
 
-  METHOD is_MatId_initial.
+        IF ls_reported-%msg IS BOUND AND
+           ls_reported-%msg->if_t100_message~t100key-msgid = 'ZFAB_MC_MINIERP' AND
+           ls_reported-%msg->if_t100_message~t100key-msgno = iv_msgno.
 
-    create_value( iv_cid = 'Cid_test_1' iv_matid = '' iv_message = 'MatId Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+          lv_correct_error_found = abap_true.
+          EXIT.
+        ENDIF.
+      ENDLOOP.
 
-  ENDMETHOD.
+      cl_abap_unit_assert=>assert_true(
+        act = lv_correct_error_found
+        msg = |Kayit istenilen { iv_msgno } nolu hatadan dolayı patlamadı!| ).
 
-  METHOD is_baseuom_initial.
-
-    create_value( iv_cid = 'Cid_test_2' iv_baseuom = '' iv_message = 'BaseUom Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
-
-  ENDMETHOD.
-
-  METHOD is_description_initial.
-
-    create_value( iv_cid = 'Cid_test_3' iv_description = '' iv_message = 'Desc Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
 
   ENDMETHOD.
 
-  METHOD is_matgroup_initial.
+  METHOD validate_MatId_initial.
 
-    create_value( iv_cid = 'Cid_test_4' iv_matgroup = '' iv_message = 'MatGroup Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-mat_id = ''.
 
-  ENDMETHOD.
-
-  METHOD is_mattype_initial.
-
-    create_value( iv_cid = 'Cid_test_5' iv_mattype = '' iv_message = 'MatType Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '001' ).
 
   ENDMETHOD.
 
-  METHOD is_netprice_initial.
+  METHOD validate_baseuom_initial.
 
-    create_value( iv_cid = 'Cid_test_6' iv_netprice = 0 iv_message = 'NetPrice Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-base_uom = ''.
 
-  ENDMETHOD.
-
-  METHOD is_safetystock_initial.
-
-    create_value( iv_cid = 'Cid_test_7' iv_safetystock = 0 iv_message = 'SafetyStock Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '002' ).
 
   ENDMETHOD.
 
-  METHOD is_waers_initial.
+  METHOD validate_description_initial.
 
-    create_value( iv_cid = 'Cid_test_8' iv_waers = '' iv_message = 'Waers Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-description = ''.
 
-  ENDMETHOD.
-
-  METHOD is_weightunit_initial.
-
-    create_value( iv_cid = 'Cid_test_9' iv_weightunit = '' iv_message = 'WeightUnit Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '003' ).
 
   ENDMETHOD.
 
-  METHOD is_weight_initial.
+  METHOD validate_matgroup_initial.
 
-    create_value( iv_cid = 'Cid_test_10' iv_weight = 0 iv_message = 'Weight Olmayan bir Kayıt Açıldı!' iv_expect_fail = abap_true ).
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-mat_group = ''.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '004' ).
+
+  ENDMETHOD.
+
+  METHOD validate_mattype_initial.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-mat_type = ''.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '005' ).
+
+  ENDMETHOD.
+
+  METHOD validate_netprice_initial.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-net_price = 0.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '006' ).
+
+  ENDMETHOD.
+
+  METHOD validate_safetystock_initial.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-safety_stock = 0.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '007' ).
+
+  ENDMETHOD.
+
+  METHOD validate_waers_initial.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-waers = ''.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '008' ).
+
+  ENDMETHOD.
+
+  METHOD validate_weightunit_initial.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-weight_unit = ''.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '009' ).
+
+  ENDMETHOD.
+
+  METHOD validate_weight_initial.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-weight = 0.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '010' ).
+
+  ENDMETHOD.
+
+  METHOD validate_negative_netprice.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-net_price = -100.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '011' ).
+
+  ENDMETHOD.
+
+  METHOD validate_negative_safetystock.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-safety_stock = -100.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '012' ).
+
+  ENDMETHOD.
+
+  METHOD validate_invalid_waers.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-waers = 'XYZ'.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '013' ).
+
+  ENDMETHOD.
+
+  METHOD validate_invalid_baseuom.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-base_uom = 'XYZ'.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '014' ).
+
+  ENDMETHOD.
+
+  METHOD validate_invalid_weightunit.
+
+    DATA(ls_test_data) = ms_base_mat.
+    ls_test_data-weight_unit = 'XYZ'.
+
+    execute_create_test( is_mat_data = ls_test_data iv_msgno = '015' ).
 
   ENDMETHOD.
 

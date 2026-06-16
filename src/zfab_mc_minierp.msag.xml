@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Mini-ERP Projesi Genel Mesaj Sınıfı</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Malzeme ID Boş Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Malzeme Tipi (MatType) Belirtilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Malzeme Grubu (MatGroup) Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Malzeme Tanımı (Description) girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Malzeme Ağırlığı (Weight) Girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Malzeme Ağırlık Tipi (WeightUnit) Girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Malzeme Stok Miktarı (SafetyStock) Girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Malzeme Stok Miktarı Türü (BaseUom) Girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Malzeme Fiyat Bilgisi (NetPrice) Girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Malzeme Fiyat Kuru Bilgisi (Waers) Girilmelidir!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Fiyat Bilgisi Eksi Değer Alamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Stok Miktarı Eksi Değer Alamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Anlamsız Para Birimi Girişi Yapıldı!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>Anlamsız Stok Miktarı Türü Girişi Yapıldı!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>Anlamsız Ağırlık Tipi Girişi Yapıldı!</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>
