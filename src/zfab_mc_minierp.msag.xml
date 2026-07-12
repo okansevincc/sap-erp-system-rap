@@ -102,7 +102,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>ZFAB_MC_MINIERP</ARBGB>
      <MSGNR>016</MSGNR>
-     <TEXT>Malzeme Stok Miktarı Türü (BaseUom) Değiştirilemez.</TEXT>
+     <TEXT>Malzeme Stok Miktarı Türü (BaseUom) Değiştirilemez!</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
@@ -114,7 +114,133 @@
      <SPRSL>E</SPRSL>
      <ARBGB>ZFAB_MC_MINIERP</ARBGB>
      <MSGNR>018</MSGNR>
-     <TEXT>Malzeme Ağırlık Tipi (WeightUnit) Değiştirilemez.</TEXT>
+     <TEXT>Malzeme Ağırlık Tipi (WeightUnit) Değiştirilemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Stokta Olan Bir Ürün Silinemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>Satın Alım Tablosunda Bulunan Bir Materyal Silinemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Satış Tablosunda Bulunan Bir Materyal Silinemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>022</MSGNR>
+     <TEXT>Bu Malzeme ID ile Zaten Bir Kayıt Var!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>101</MSGNR>
+     <TEXT>İş Ortağı ID&apos;si Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>102</MSGNR>
+     <TEXT>İş Ortağının Rolü Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>103</MSGNR>
+     <TEXT>İş Ortağının Şehri Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>104</MSGNR>
+     <TEXT>İş Ortağının İsmi Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>105</MSGNR>
+     <TEXT>İş Ortağının Ülkesi Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>106</MSGNR>
+     <TEXT>İş Ortağının Email&apos;i Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>107</MSGNR>
+     <TEXT>İş Ortağının Vergi Numarası Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>108</MSGNR>
+     <TEXT>İş Ortağının Vergi Ofisi Boş Bırakılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>109</MSGNR>
+     <TEXT>Geçersiz Ülke Kodu!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>110</MSGNR>
+     <TEXT>Geçersiz Email!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>111</MSGNR>
+     <TEXT>Geçersiz İş Ortağı Rolü!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>112</MSGNR>
+     <TEXT>Geçersiz Vergi Numarası!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>113</MSGNR>
+     <TEXT>Bu İş Ortağı ID ile Zaten Bir Kayıt Var!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>114</MSGNR>
+     <TEXT>İş Ortağının ID&apos;si Değiştirilemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>115</MSGNR>
+     <TEXT>İş Ortağının Rolü Değiştirilemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>116</MSGNR>
+     <TEXT>Satın Alım Tablosunda Bulunan Bir İş Ortağı Silinemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>117</MSGNR>
+     <TEXT>Satış Tablosunda Bulunan Bir İş Ortağı Silinemez!</TEXT>
     </T100>
    </T100>
   </asx:values>

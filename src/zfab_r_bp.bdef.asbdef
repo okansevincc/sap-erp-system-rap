@@ -13,7 +13,7 @@ etag master LocalLastChangedAt
   update;
   delete;
   field ( numbering : managed ) BpUuid;
-  field ( readonly ) BpUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt;
+  field ( readonly ) BpUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt, FullAddress;
   field ( mandatory ) BpId, BpRole, CompanyName,Country,City,Email,Phone,TaxNumber,TaxOffice;
 
   draft action Activate optimized;

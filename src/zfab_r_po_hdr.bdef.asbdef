@@ -52,7 +52,7 @@ etag master LocalLastChangedAt
   update;
   delete;
   field ( numbering : managed ) PoItmUuid;
-  field ( readonly ) PoItmUuid, PoUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt, UnitPrice, UnitUom, Waers;
+  field ( readonly ) PoItmUuid, PoUuid, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt, UnitPrice, UnitUom, Waers, TotalPrice;
   field ( mandatory ) ItemPos, MatUuid, Quantity;
   association _Purchase { with draft; }
 

@@ -51,7 +51,7 @@ etag master LocalLastChangedAt
   update;
   delete;
   field ( numbering : managed ) SoItmUuid;
-  field ( readonly ) SoItmUuid, SoUuid;
+  field ( readonly ) SoItmUuid, SoUuid, TotalPrice;
   association _Sales { with draft; }
 
   mapping for zfab_t_so_itm{
