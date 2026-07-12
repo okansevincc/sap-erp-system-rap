@@ -49,7 +49,7 @@ I am paying special attention to clean code practices at the database level. Ins
 
 ## 5. Current Status & Roadmap
 
-**Where I am right now:** I have successfully laid down the entire database and CDS architecture. I am currently in the most exciting part of the backend development: writing Unit Tests (TDD) and implementing the actual ABAP business logic (Validations and Determinations) inside the Behavior Implementation classes.
+**Where I am right now:** I have successfully laid down the entire database and CDS architecture. I am currently in the most exciting part of the backend development: writing Unit Tests (TDD) and implementing the actual ABAP business logic (Validations and Determinations) inside the Behavior Implementation classes. **Unit testing for Master Data (Business Partners and Materials) is fully implemented, and I am actively building the test infrastructure for Transactional Data (Sales Orders).**
 
 **What is next:**
 Once the backend is fully secure and tested, I will begin the UI development phase. I plan to consume my exposed OData V4 services by developing a responsive, freestyle SAPUI5 application to visualize the ERP processes.
