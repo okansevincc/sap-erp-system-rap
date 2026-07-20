@@ -69,7 +69,7 @@ etag master LocalLastChangedAt
   LastChangedAt = last_changed_at;
   LastChangedBy = last_changed_by;
   LocalLastChangedAt = local_last_changed_at;
-
+  TotalPrice = total_price;
   }
 
 }

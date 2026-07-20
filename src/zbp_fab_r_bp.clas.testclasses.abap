@@ -46,7 +46,7 @@ CLASS ltcl_bp_create_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setup.
-    ms_base_bp = zcl_fab_mock_factory=>get_valid_bussinespartner(  ).
+    ms_base_bp = zcl_fab_mock_factory=>get_valid_businesspartner( iv_bp_role = 'C' ).
   ENDMETHOD.
 
   METHOD teardown.
@@ -308,7 +308,7 @@ CLASS ltcl_bp_update_tests IMPLEMENTATION.
 
   METHOD setup.
 
-    ms_base_bp = zcl_fab_mock_factory=>get_valid_bussinespartner(  ).
+    ms_base_bp = zcl_fab_mock_factory=>get_valid_businesspartner( iv_bp_role = 'C' ).
 
     DATA lt_mock_db_data TYPE STANDARD TABLE OF zfab_t_bp.
     APPEND ms_base_bp TO lt_mock_db_data.
@@ -612,7 +612,7 @@ CLASS ltcl_bp_delete_tests IMPLEMENTATION.
 
   METHOD setup.
 
-    ms_base_bp = zcl_fab_mock_factory=>get_valid_bussinespartner(  ).
+    ms_base_bp = zcl_fab_mock_factory=>get_valid_businesspartner( iv_bp_role = 'C' ).
 
   ENDMETHOD.
 
@@ -623,7 +623,7 @@ CLASS ltcl_bp_delete_tests IMPLEMENTATION.
 
   ENDMETHOD.
 
-METHOD execute_delete_test.
+  METHOD execute_delete_test.
 
     DATA: lt_failed   TYPE RESPONSE FOR FAILED zfab_r_bp,
           lt_reported TYPE RESPONSE FOR REPORTED zfab_r_bp.
@@ -687,30 +687,28 @@ METHOD execute_delete_test.
   METHOD validate_delete_has_po.
 
     DATA(ls_bp_data) = ms_base_bp.
-
     go_mock_environment->clear_doubles( ).
 
     DATA lt_mock_db_bp TYPE STANDARD TABLE OF zfab_t_bp.
     APPEND ls_bp_data TO lt_mock_db_bp.
     go_mock_environment->insert_test_data( i_data = lt_mock_db_bp ).
 
-    DATA: lt_mock_db_po_hdr TYPE STANDARD TABLE OF zfab_t_po_hdr,
-          lt_mock_db_po_itm TYPE STANDARD TABLE OF zfab_t_po_itm.
-
-    DATA(ls_po_hdr_data) = zcl_fab_mock_factory=>get_valid_po_header(  ).
-    DATA(ls_po_itm_data) = zcl_fab_mock_factory=>get_valid_po_itm( ).
-
-    ls_po_itm_data-po_uuid = ls_po_hdr_data-po_uuid.
-    ls_po_hdr_data-vendor_uuid = ls_bp_data-bp_uuid.
-
+    DATA: lt_mock_db_po_hdr TYPE STANDARD TABLE OF zfab_t_po_hdr.
+    DATA(ls_po_hdr_data) = zcl_fab_mock_factory=>get_valid_po_header( iv_vendor_uuid = ls_bp_data-bp_uuid ).
     APPEND ls_po_hdr_data TO lt_mock_db_po_hdr.
-    APPEND ls_po_itm_data TO lt_mock_db_po_itm.
-
     go_mock_environment->insert_test_data( i_data = lt_mock_db_po_hdr ).
-    go_mock_environment->insert_test_data( i_data = lt_mock_db_po_itm ).
+
+    TRY.
+        DATA(lt_po_itm_data) = zcl_fab_mock_factory=>get_valid_po_items(
+                                 po_header_uuid = ls_po_hdr_data-po_uuid
+                                 iv_mat_uuid    = cl_system_uuid=>create_uuid_x16_static( ) ).
+      CATCH cx_uuid_error.
+        cl_abap_unit_assert=>fail( 'Mock verisi için Material UUID üretilemedi!' ).
+    ENDTRY.
+
+    go_mock_environment->insert_test_data( i_data = lt_po_itm_data ).
 
     execute_delete_test( is_bp_data = ls_bp_data iv_msgno = '116' ).
-
 
   ENDMETHOD.
 
@@ -727,11 +725,12 @@ METHOD execute_delete_test.
     DATA: lt_mock_db_so_hdr TYPE STANDARD TABLE OF zfab_t_so_hdr,
           lt_mock_db_so_itm TYPE STANDARD TABLE OF zfab_t_so_itm.
 
-    DATA(ls_so_hdr_data) = zcl_fab_mock_factory=>get_valid_so_header(  ).
-    DATA(ls_so_itm_data) = zcl_fab_mock_factory=>get_valid_so_itm( ).
-
-    ls_so_itm_data-so_uuid = ls_so_hdr_data-so_uuid.
-    ls_so_hdr_data-customer_uuid = ls_bp_data-bp_uuid.
+    DATA(ls_so_hdr_data) = zcl_fab_mock_factory=>get_valid_so_header( iv_customer_uuid = ls_bp_data-bp_uuid ).
+    TRY.
+        DATA(ls_so_itm_data) = zcl_fab_mock_factory=>get_valid_so_itm( iv_so_header_uuid = ls_so_hdr_data-so_uuid iv_mat_uuid = cl_system_uuid=>create_uuid_x16_static( ) ).
+      CATCH cx_uuid_error.
+        cl_abap_unit_assert=>fail( 'Mock verisi için Material UUID üretilemedi!' ).
+    ENDTRY.
 
     APPEND ls_so_hdr_data TO lt_mock_db_so_hdr.
     APPEND ls_so_itm_data TO lt_mock_db_so_itm.

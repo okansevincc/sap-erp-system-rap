@@ -10,11 +10,17 @@ CLASS zcl_fab_mock_factory DEFINITION
 
     CLASS-METHODS:
       get_valid_material RETURNING VALUE(rs_mat) TYPE zfab_t_mat,
-      get_valid_po_header RETURNING VALUE(rs_po_header) TYPE zfab_t_po_hdr,
-      get_valid_po_itm RETURNING VALUE(rs_po_itm) TYPE zfab_t_po_itm,
-      get_valid_so_header RETURNING VALUE(rs_so_header) TYPE zfab_t_so_hdr,
-      get_valid_so_itm RETURNING VALUE(rs_so_itm) TYPE zfab_t_so_itm,
-      get_valid_bussinesPartner RETURNING VALUE(rs_bp) TYPE zfab_t_bp,
+      get_valid_po_header IMPORTING iv_vendor_uuid TYPE sysuuid_x16
+                          RETURNING VALUE(rs_po_header) TYPE zfab_t_po_hdr,
+      get_valid_po_itm IMPORTING iv_po_header_uuid TYPE sysuuid_x16
+                                 iv_mat_uuid        TYPE sysuuid_x16
+                       RETURNING VALUE(rs_po_itm) TYPE zfab_t_po_itm,
+      get_valid_so_header IMPORTING iv_customer_uuid TYPE sysuuid_x16
+                          RETURNING VALUE(rs_so_header) TYPE zfab_t_so_hdr,
+      get_valid_so_itm IMPORTING iv_so_header_uuid TYPE sysuuid_x16
+                                 iv_mat_uuid        TYPE sysuuid_x16
+                                 RETURNING VALUE(rs_so_itm) TYPE zfab_t_so_itm,
+      get_valid_businessPartner importing iv_bp_role TYPE c DEFAULT 'C' RETURNING VALUE(rs_bp) TYPE zfab_t_bp,
       get_valid_so_items IMPORTING so_header_uuid TYPE sysuuid_x16
                                    iv_mat_uuid TYPE sysuuid_x16 RETURNING VALUE(rt_items) TYPE tt_so_itm,
       get_valid_po_items IMPORTING po_header_uuid TYPE sysuuid_x16
@@ -56,8 +62,8 @@ CLASS zcl_fab_mock_factory IMPLEMENTATION.
         rs_po_header = VALUE #(
             po_uuid = cl_system_uuid=>create_uuid_x16_static(  )
             po_id = '4500000001'
-            vendor_uuid = cl_system_uuid=>create_uuid_x16_static(  )
-            status = 'A'
+            vendor_uuid = iv_vendor_uuid
+            status = 'O'
             total_amount = '850000.00'
             waers = 'TRY'
          ).
@@ -71,9 +77,9 @@ CLASS zcl_fab_mock_factory IMPLEMENTATION.
 
     TRY.
         rs_po_itm = VALUE #(
-        po_uuid = cl_system_uuid=>create_uuid_x16_static(  )
+        po_uuid = iv_po_header_uuid
         item_pos = '00010'
-        mat_uuid = cl_system_uuid=>create_uuid_x16_static(  )
+        mat_uuid = iv_mat_uuid
         quantity = 1000
         unit_uom = 'ST'
         unit_price = '850.00'
@@ -91,8 +97,8 @@ CLASS zcl_fab_mock_factory IMPLEMENTATION.
         rs_so_header = VALUE #(
         so_uuid = cl_system_uuid=>create_uuid_x16_static(  )
         so_id = '1000000001'
-        customer_uuid = cl_system_uuid=>create_uuid_x16_static(  )
-        status = 'C'
+        customer_uuid = iv_customer_uuid
+        status = 'O'
         total_amount = '42500.00'
         waers = 'TRY'
         ).
@@ -105,9 +111,9 @@ CLASS zcl_fab_mock_factory IMPLEMENTATION.
 
     TRY.
         rs_so_itm = VALUE #(
-        so_uuid = cl_system_uuid=>create_uuid_x16_static(  )
+        so_uuid = iv_so_header_uuid
         item_pos = '00010'
-        mat_uuid = cl_system_uuid=>create_uuid_x16_static(  )
+        mat_uuid = iv_mat_uuid
         quantity = 50
         unit_uom = 'ST'
         unit_price = '850'
@@ -119,13 +125,13 @@ CLASS zcl_fab_mock_factory IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD get_valid_bussinespartner.
+  METHOD get_valid_businesspartner.
 
     TRY.
         rs_bp = VALUE #(
               bp_uuid       = cl_system_uuid=>create_uuid_x16_static(  )
               bp_id         = 'BP-1000'
-              bp_role       = 'S'
+              bp_role       = iv_bp_role
               company_name  = 'Tech Solutions A.Ş.'
               tax_number    = '1234567890'
               tax_office    = 'Nilüfer V.D.'

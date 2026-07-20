@@ -17,7 +17,7 @@ association[1..1] to ZFAB_R_MAT as _Product on $projection.MatUuid = _Product.Ma
     unit_price as UnitPrice,
     waers as Waers,
     @Semantics.amount.currencyCode: 'Waers'
-    cast( cast( quantity as abap.dec(13,3)) * cast( unit_price as abap.dec(15,2)) as abap.curr( 15,2 ) ) as TotalPrice,
+    total_price as TotalPrice,
     
     //Admin Data
     @Semantics.systemDateTime.createdAt: true

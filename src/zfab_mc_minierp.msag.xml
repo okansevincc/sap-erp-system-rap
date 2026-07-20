@@ -242,6 +242,66 @@
      <MSGNR>117</MSGNR>
      <TEXT>Satış Tablosunda Bulunan Bir İş Ortağı Silinemez!</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>301</MSGNR>
+     <TEXT>Müşterinin Rolü C (Customer) Olmalıdır!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>302</MSGNR>
+     <TEXT>Müşteri Alanı Boş Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>303</MSGNR>
+     <TEXT>Para Birimi Alanı Boş Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>304</MSGNR>
+     <TEXT>Alınan Malzeme Alanı Boş Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>305</MSGNR>
+     <TEXT>Alınan Malzemenin Birim Fiyatı Boş Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>306</MSGNR>
+     <TEXT>Alınan Malzemenin Birim Fiyatı 0 Yada Eksi Değer Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>307</MSGNR>
+     <TEXT>Alınan Malzemenin Ölçü Birimi Boş Olamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>308</MSGNR>
+     <TEXT>Sistemde Olmayan Bir Malzeme ID&apos;si Kullanıldı!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>309</MSGNR>
+     <TEXT>İtemi Olmayan Bir Header Yaratılamaz!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZFAB_MC_MINIERP</ARBGB>
+     <MSGNR>310</MSGNR>
+     <TEXT>Tamamlanmış Bir Satın Alım Değiştirilemez Yada Silinemez!</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

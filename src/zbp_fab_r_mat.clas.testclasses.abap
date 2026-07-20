@@ -701,8 +701,12 @@ CLASS ltcl_mat_delete_test IMPLEMENTATION.
     DATA: lt_mock_db_po_itm TYPE STANDARD TABLE OF zfab_t_po_itm,
           ms_base_po_itm    TYPE zfab_t_po_itm.
 
-    ms_base_po_hdr = zcl_fab_mock_factory=>get_valid_po_header(  ).
-    ms_base_po_itm  = zcl_fab_mock_factory=>get_valid_po_itm(  ).
+    try.
+    ms_base_po_hdr = zcl_fab_mock_factory=>get_valid_po_header( iv_vendor_uuid = cl_system_uuid=>create_uuid_x16_static( ) ).
+    CATCH cx_uuid_error.
+    cl_abap_unit_assert=>fail( 'Supplier UUID üretilemedi!' ).
+    ENDTRY.
+    ms_base_po_itm  = zcl_fab_mock_factory=>get_valid_po_itm( iv_mat_uuid = ls_mat_data-mat_uuid iv_po_header_uuid = ms_base_po_hdr-po_uuid ).
 
     ms_base_po_itm-po_uuid = ms_base_po_hdr-po_uuid.
     ms_base_po_itm-mat_uuid = ls_mat_data-mat_uuid.
@@ -735,11 +739,12 @@ CLASS ltcl_mat_delete_test IMPLEMENTATION.
     DATA: lt_mock_db_so_itm TYPE STANDARD TABLE OF zfab_t_so_itm,
           ms_base_so_itm    TYPE zfab_t_so_itm.
 
-    ms_base_so_hdr = zcl_fab_mock_factory=>get_valid_so_header(  ).
-    ms_base_so_itm  = zcl_fab_mock_factory=>get_valid_so_itm(  ).
-
-    ms_base_so_itm-so_uuid = ms_base_so_hdr-so_uuid.
-    ms_base_so_itm-mat_uuid = ls_mat_data-mat_uuid.
+    try.
+    ms_base_so_hdr = zcl_fab_mock_factory=>get_valid_so_header( iv_customer_uuid = cl_system_uuid=>create_uuid_x16_static( ) ).
+    CATCH cx_uuid_error.
+    cl_abap_unit_assert=>fail( 'Customer UUID üretilemedi!' ).
+    ENDTRY.
+    ms_base_so_itm  = zcl_fab_mock_factory=>get_valid_so_itm( iv_mat_uuid = ls_mat_data-mat_uuid iv_so_header_uuid = ms_base_so_hdr-so_uuid ).
 
     APPEND ms_base_so_hdr TO lt_mock_db_so_hdr.
     go_mock_environment->insert_test_data( i_data = lt_mock_db_so_hdr ).
