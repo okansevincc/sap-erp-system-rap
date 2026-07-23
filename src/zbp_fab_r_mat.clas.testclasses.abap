@@ -438,7 +438,7 @@ CLASS ltcl_mat_update_test IMPLEMENTATION.
             ENTITY _MaterialProduct
             UPDATE FIELDS ( MatId )
             WITH VALUE #( (
-            BaseUom = ls_test_data-mat_id
+            MatId = ls_test_data-mat_id
     ) ) FAILED lt_failed
         REPORTED lt_reported.
 
@@ -477,7 +477,7 @@ CLASS ltcl_mat_update_test IMPLEMENTATION.
             ENTITY _MaterialProduct
             UPDATE FIELDS ( WeightUnit )
             WITH VALUE #( (
-            BaseUom = ls_test_data-weight_unit
+            WeightUnit = ls_test_data-weight_unit
     ) ) FAILED lt_failed
         REPORTED lt_reported.
 

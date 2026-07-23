@@ -727,13 +727,13 @@ CLASS ltcl_so_update_test IMPLEMENTATION.
     READ ENTITIES OF zfab_r_so_hdr ENTITY SalesItems FIELDS ( Quantity UnitPrice )
     WITH VALUE #( FOR ls_item IN mt_base_so_itm ( %key-SoItmUuid = ls_item-so_itm_uuid ) ) RESULT DATA(lt_item_result).
 
-    cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 1 ]-Quantity  exp = 150 msg = 'Update başarılı dendi ama Miktar güncellenmemiş!' ).
+    cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 1 ]-Quantity  exp = '150.00' msg = 'Update başarılı dendi ama Miktar güncellenmemiş!' ).
     cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 1 ]-UnitPrice  exp = 50  msg = 'Update başarılı dendi ama Fiyat güncellenmemiş!' ).
 
-    cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 2 ]-Quantity   exp = 150 msg = 'Update başarılı dendi ama Miktar güncellenmemiş!' ).
+    cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 2 ]-Quantity   exp = '150.00' msg = 'Update başarılı dendi ama Miktar güncellenmemiş!' ).
     cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 2 ]-UnitPrice  exp = 50  msg = 'Update başarılı dendi ama Fiyat güncellenmemiş!' ).
 
-    cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 3 ]-Quantity   exp = 150 msg = 'Update başarılı dendi ama Miktar güncellenmemiş!' ).
+    cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 3 ]-Quantity   exp = '150.00' msg = 'Update başarılı dendi ama Miktar güncellenmemiş!' ).
     cl_abap_unit_assert=>assert_equals( act = lt_item_result[ 3 ]-UnitPrice  exp = 50  msg = 'Update başarılı dendi ama Fiyat güncellenmemiş!' ).
 
   ENDMETHOD.
