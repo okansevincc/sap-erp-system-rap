@@ -21,7 +21,7 @@ I am utilizing this project to bridge the gap between theoretical SAP courses an
 * **Core Data Services (CDS) Views (Root, Interface, Consumption)** `[Successfully Implemented]`
 * **Behavior Definitions (BDEF)** `[Successfully Implemented]`
 * **Behavior Implementations (BIL - Validations, Determinations)** `[Currently Developing]`
-* **Entity Manipulation Language (EML) & Unit Testing (TDD)** `[Currently Developing]`
+* **Entity Manipulation Language (EML) & Unit Testing (TDD)** `[Successfully Implemented]`
 * **OData V4 API Generation (Service Definition & Binding)** `[Successfully Implemented]`
 * **SAPUI5 Freestyle Application (Frontend)** `[Planned / Next Step]`
 
@@ -49,10 +49,17 @@ I am paying special attention to clean code practices at the database level. Ins
 
 ## 5. Current Status & Roadmap
 
-**Where I am right now:** I have successfully laid down the entire database and CDS architecture. I am currently in the most exciting part of the backend development: writing Unit Tests (TDD) and implementing the actual ABAP business logic (Validations and Determinations) inside the Behavior Implementation classes. **Unit testing for Master Data (Business Partners and Materials) is fully implemented, and I am actively building the test infrastructure for Transactional Data (Sales Orders).**
+**Where I am right now:** 
+I have successfully laid down the entire database and CDS architecture, and fully built the Unit Testing (TDD) infrastructure for both Master and Transactional Data (BP, MAT, SO, PO). I am currently focusing entirely on the core backend business logic—writing the actual **Validations and Determinations** inside the Behavior Implementation (BIL) classes to make my unit tests pass and secure the system.
 
 **What is next:**
-Once the backend is fully secure and tested, I will begin the UI development phase. I plan to consume my exposed OData V4 services by developing a responsive, freestyle SAPUI5 application to visualize the ERP processes.
+Once all the backend validations are implemented and my test coverage is green, I will jump into the UI development phase. I plan to consume my exposed OData V4 services by developing a responsive, freestyle SAPUI5 application to bring the ERP processes to life.
+
+### 💡 Retrospective: What I Could Do Better
+As I reflect on my backend development journey, I have identified a few key areas for future refactoring to elevate my code to senior-level architectural standards:
+
+* **Unit Testing =** I plan to transition from a static Mock Factory to a **Builder Design Pattern** (`->with_role('S')->build()`) for more flexible and readable test data creation. I also want to implement a **Base Test Class** (Inheritance) to reduce boilerplate setup/teardown code, and replace hardcoded expected values with dynamic calculations to make my tests bulletproof.
+* **Code Reusability =** I will refactor my test helper methods to handle both *Happy Paths* and *Negative Tests* seamlessly using boolean flags (e.g., `iv_expect_fail`), which will significantly reduce redundant EML modify statements.
 
 ## 6. Associated Learning Paths
 
